@@ -19,7 +19,7 @@ class Explosion {
         this.image.src = "boom.png";
         this.frame = 0;
         this.timer = 0;
-        this.angle = Math.random() * 6.28; // random radian number
+        this.angle = Math.random() * 6.28; // random radian number for angle
         this.sound = new Audio();
         this.sound.src = "sound.wav";
     }
@@ -33,22 +33,24 @@ class Explosion {
     }
 
     draw() {
+        if (currentOption === 0) {
+            ctx.save();
+            ctx.translate(this.x, this.y); // translate on this x,y coords
+            ctx.rotate(this.angle); // expects radians, random radian chosen
+    
+            // ctx.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh);
+            ctx.drawImage(this.image,
+                this.spriteWidth * this.frame, 0,
+                this.spriteWidth, this.spriteHeight,
+                0 - this.width/2, 0 - this.height/2, this.width, this.height); // draw from 0 coords and offset by this.width/2
+    
+            ctx.restore();
+        }
 
-        ctx.save();
-        ctx.translate(this.x, this.y); // translate on this x,y coords
-        ctx.rotate(this.angle); // expects radians, random radian chosen
-
-        // ctx.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh);
-        ctx.drawImage(this.image,
-            this.spriteWidth * this.frame, 0,
-            this.spriteWidth, this.spriteHeight,
-            0 - this.width/2, 0 - this.height/2, this.width, this.height); // draw from 0 coords and offset by this.width/2
-
-        ctx.restore();
     }
 }
 
-window.addEventListener("click", function(event) {
+canvas.addEventListener("click", function(event) {
     createAnimation(event);
 })
 
@@ -82,3 +84,20 @@ function animate() {
     requestAnimationFrame(animate);
 }
 animate();
+
+
+
+//
+//
+//
+const visualBtn = document.getElementById("visual-btn");
+const sfxBtn = document.getElementById("sfx-btn");
+
+let currentOption = 0;
+
+visualBtn.addEventListener("click", () => {
+    currentOption = 0;
+})
+sfxBtn.addEventListener("click", () => {
+    currentOption = 1;
+})
